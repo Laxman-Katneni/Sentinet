@@ -416,6 +416,6 @@ MIT License - See LICENSE file
 
 ## 📧 Contact
 
-Built by **[Your Name]** - [GitHub](https://github.com/yourusername)
+Built by **Laxman Katneni** - [LinkedIn](www.linkedin.com/in/laxman-katneni)
 
 *"Detecting market anomalies before they hit the news"*
