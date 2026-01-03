@@ -1,0 +1,28 @@
+# Sentinet - Market Microstructure Surveillance Engine
+# Python Dependencies
+
+# Market Data
+alpaca-py>=0.11.0
+
+# Async I/O
+asyncio>=3.4.3
+aiokafka>=0.8.1
+asyncpg>=0.29.0
+
+# Data Processing
+numpy>=1.24.0
+pandas>=2.0.0
+scipy>=1.10.0
+
+# Visualization
+streamlit>=1.28.0
+plotly>=5.17.0
+seaborn>=0.12.0
+networkx>=3.1
+
+# Configuration
+pyyaml>=6.0
+python-dotenv>=1.0.0
+
+# Utilities
+requests>=2.31.0

@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  redpanda:
+    image: docker.redpanda.com/redpandadata/redpanda:v23.3.3
+    container_name: sentinet-redpanda
+    command:
+      - redpanda
+      - start
+      - --smp
+      - '1'
+      - --reserve-memory
+      - 0M
+      - --overprovisioned
+      - --node-id
+      - '0'
+      - --kafka-addr
+      - PLAINTEXT://0.0.0.0:29092,OUTSIDE://0.0.0.0:9092
+      - --advertise-kafka-addr
+      - PLAINTEXT://redpanda:29092,OUTSIDE://localhost:9092
+    environment:
+      REDPANDA_RESERVE_MEMORY: 0M
+    ports:
+      - "9092:9092"
+      - "9644:9644"
+      - "8080:8080"
+    mem_limit: 1g
+    mem_reservation: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -q 'Healthy' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - redpanda-data:/var/lib/redpanda/data
+    networks:
+      - sentinet-network
+
+  timescaledb:
+    image: timescale/timescaledb:latest-pg15
+    container_name: sentinet-timescaledb
+    environment:
+      POSTGRES_DB: sentinet
+      POSTGRES_USER: sentinet_user
+      POSTGRES_PASSWORD: sentinet_pass
+      TIMESCALEDB_TELEMETRY: 'off'
+    ports:
+      - "5432:5432"
+    mem_limit: 1g
+    mem_reservation: 512m
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sentinet_user -d sentinet"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    volumes:
+      - timescale-data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+    networks:
+      - sentinet-network
+
+volumes:
+  redpanda-data:
+    driver: local
+  timescale-data:
+    driver: local
+
+networks:
+  sentinet-network:
+    driver: bridge

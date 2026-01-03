@@ -1,0 +1,45 @@
+# Sentinet Configuration
+
+# Watched Symbols
+symbols:
+  equities:
+    - AAPL
+    - MSFT
+    - GOOGL
+    - TSLA
+  crypto:
+    - BTC/USD
+    - ETH/USD
+
+# Quantitative Parameters
+analytics:
+  rolling_window_seconds: 300  # 5 minutes
+  z_score_threshold: 3.0
+  correlation_threshold_high: 0.8
+  correlation_threshold_low: 0.2
+  imbalance_threshold: 0.6  # |ratio| > 0.6 triggers alert
+  batch_size: 100  # Process messages in batches
+  update_interval_seconds: 5  # Write to DB every 5 seconds
+
+# Data Ingestion
+ingestion:
+  reconnect_max_retries: 10
+  reconnect_backoff_base: 2  # Exponential backoff
+  throughput_log_interval: 10  # Log events/sec every 10 seconds
+
+# Replay Mode (Benchmarking)
+replay:
+  speed_multiplier: 100  # 100x playback speed
+  output_file: data/recorded_ticks.jsonl
+
+# Dashboard
+dashboard:
+  refresh_interval_seconds: 2
+  max_chart_points: 500  # Limit chart data to prevent slowdown
+  network_graph_min_correlation: 0.5  # Only show edges > 0.5 correlation
+
+# Alert Severity Levels
+alerts:
+  critical_z_score: 4.0
+  warning_z_score: 3.0
+  info_z_score: 2.0
